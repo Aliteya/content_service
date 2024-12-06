@@ -1,5 +1,6 @@
 from ..repositories import FileRepository, MinioClient
 from ..schemas import FileSchema
+from ..models import File
 from sqlalchemy.ext.asyncio import AsyncSession
 
 class FileService():
@@ -8,7 +9,7 @@ class FileService():
         self.file_repo = FileRepository(self.session)
         self.minio_client = MinioClient(self.session)
 
-    async def add_file(self, file: FileSchema)-> bool:
+    async def add_file(self, file: FileSchema):
         file_adding = await self.file_repo.add_file(file.model_dump())
         return file_adding
 

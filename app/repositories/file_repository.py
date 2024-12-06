@@ -7,16 +7,16 @@ class FileRepository():
     def __init__(self, db_session: AsyncSession):
         self.session = db_session
     
-    async def add_file(self, file: dict) -> bool:
+    async def add_file(self, file: dict) -> File| None:
         try:
             file = File(**file)
             self.session.add(file)
             await self.session.flush()
             await self.session.commit()
-            return True
+            return file
         except:
             await self.session.rollback()
-            return False
+            return None
 
     async def get_file_by_project(self, project_id) :
         file = await self.session.execute(select(File).filter(File.project_id == project_id))

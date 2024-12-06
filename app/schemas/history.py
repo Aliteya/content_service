@@ -25,7 +25,7 @@ class ProjectHistoryReadDTO(BaseModel):
 
 class ProjectHistoryCreateEditDTO(BaseModel):
     type: HistoryType
-    file_id: int
+    file_id: int | None = None
     author_id: int
     filter: FilterType
     startTime: date

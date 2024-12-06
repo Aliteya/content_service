@@ -7,6 +7,7 @@ class FileType(str, Enum):
     AUDIO = "AUDIO"
 
 class FileSchema(BaseModel):
+    id: int
     type: FileType 
     name: str
     body: bytes
@@ -16,3 +17,4 @@ class FileCreateSchema(BaseModel):
     type: FileType 
     name: str
     body: bytes
+    project_id: int | None = None

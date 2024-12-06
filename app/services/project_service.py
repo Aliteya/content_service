@@ -34,9 +34,8 @@ class ProjectService:
             raise ValueError(f"Ошибка при обновлении проекта id={project_id}.")
         return project
 
-    async def create_new_project(self, name: str, category: Category) -> bool:
+    async def create_new_project(self, name: str, category: Category):
         new_project_data = {"projectName": name, "category": category}
-        print("service")
         project = await self.project_repo.save_project(new_project_data)        
         if not project:
             raise RuntimeError("Не удалось создать проект.")

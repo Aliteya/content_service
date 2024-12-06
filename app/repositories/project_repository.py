@@ -25,16 +25,16 @@ class ProjectRepository():
             await self.session.rollback()
             return False
         
-    async def save_project(self, new_project: dict) -> bool:
+    async def save_project(self, new_project: dict) -> Project | None:
         try:
             save_project = Project(**new_project)
             self.session.add(save_project)
             await self.session.flush()
             await self.session.commit()
-            return True
+            return save_project
         except:
             await self.session.rollback()
-            return False
+            return None
 
     async def delete_by_id(self, id: int) -> bool:
         try:

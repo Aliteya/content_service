@@ -8,7 +8,6 @@ settings = Settings()
 
 # Настраиваем движок
 postgre_database = settings.get_url()
-print(postgre_database)
 
 engine = create_async_engine(postgre_database, echo=True)
 
