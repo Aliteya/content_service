@@ -40,7 +40,7 @@ async def update_user(user_id: int, user_update: UserSchema, user_service: UserS
 
 @user_router.delete("/delete/{user_id}")
 async def update_user(user_id: int, user_service: UserService = Depends(get_file_service)):
-    deletion = await user_service.user_repo.delete_by_id(id)
+    deletion = await user_service.user_repo.delete_by_id(user_id)
     if not deletion:
         raise HTTPException(status_code=404, detail="User not found")
 

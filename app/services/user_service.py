@@ -72,10 +72,11 @@ class UserService():
         )
     
     async def update_user_by_id(self, id: int, old_user: UserCreateEditDTO) -> bool:
-        updating = await self.user_repo.update_by_id(id, old_user.model_dump())
+        updating = await self.user_repo.update_by_id(id, old_user)
         return updating
 
     async def delete_user_by_id(self, id: int) -> bool:
+        print(id)
         deletion = await self.user_repo.delete_by_id(id)
         return deletion
     
