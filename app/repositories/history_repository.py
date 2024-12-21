@@ -1,13 +1,14 @@
-from ..models import History, Project
+from ..models import History, Project, File, User
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 
 class HistoryRepository():
     def __init__(self, db_session: AsyncSession):
         self.session = db_session
 
     async def get_history_by_project(self, project_id: int): 
-        hist = await self.session.execute(select(History).filter(History.project_id == project_id))
+        hist = await self.session.execute(select(History).options(selectinload(History.file)).where(History.project_id == project_id))
         return hist.scalars().all()
 
     async def add_history_to_project(self, project_id: int, history: dict) -> bool:

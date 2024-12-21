@@ -1,13 +1,14 @@
-from ..models import Project
+from ..models import Project, History
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 
 class ProjectRepository():
     def __init__(self, db_session: AsyncSession):
         self.session = db_session
 
     async def get_by_id(self, id: int) -> Project: 
-        user = await self.session.execute(select(Project).filter(Project.id == id))
+        user = await self.session.execute(select(Project).options(selectinload(Project.histories).selectinload(History.file)).where(Project.id == id))
         return user.scalar_one_or_none()
 
     async def update_by_id(self, id: int, update_project: dict) -> bool:

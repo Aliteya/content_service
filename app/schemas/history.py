@@ -20,8 +20,8 @@ class ProjectHistoryReadDTO(BaseModel):
     type: HistoryType
     fileName: str
     filter: FilterType
-    startTime: str
-    endTime: str
+    startTime: date
+    endTime: date
 
 class ProjectHistoryCreateEditDTO(BaseModel):
     type: HistoryType

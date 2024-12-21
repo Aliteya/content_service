@@ -1,6 +1,6 @@
 from ..repositories import ProjectRepository
 from .file_service import FileService
-from ..schemas import ProjectReadDTO, ProjectCreateEditDTO, FileCreateSchema, Category
+from ..schemas import ProjectReadDTO, ProjectCreateEditDTO, FileCreateSchema, ProjectHistoryReadDTO, Category
 from sqlalchemy.ext.asyncio import AsyncSession
 
 class ProjectService:
@@ -8,12 +8,31 @@ class ProjectService:
         self.session = db_session
         self.project_repo = ProjectRepository(self.session)
         self.file_service = FileService(self.session)
-
+        
     async def get_project_by_id(self, project_id: int) -> ProjectReadDTO:
         project = await self.project_repo.get_by_id(project_id)
         if not project:
             raise ValueError(f"Проект с id={project_id} не найден.")
-        return ProjectReadDTO.from_orm(project)
+
+        hist_map = []
+        for history in project.histories:
+            hist_map.append(
+                ProjectHistoryReadDTO(
+                    project_id=project_id,
+                    type=history.type,
+                    fileName=history.file.name,
+                    filter=history.filter,
+                    startTime=history.startTime,
+                    endTime=history.endTime,
+                )
+            )
+        
+        return ProjectReadDTO(
+            id=project.id,
+            projectName=project.projectName,
+            category=project.category,
+            my_histories=hist_map,
+        )
 
     async def delete_project_by_id(self, project_id: int) -> str:
         project = await self.project_repo.get_by_id(project_id)
